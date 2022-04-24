@@ -1,5 +1,16 @@
 @extends('layouts.app')
 @section('content')
+
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <div class="col-sm-offset-2 col-sm-8">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -9,9 +20,9 @@
             <div class="panel-body">
                 <!-- Display Validation Errors -->
                 <!-- New Task Form -->
-                <form action="/edit" method="post" class="form-horizontal">
+                <form action="{{route("task.update",$task->id)}}" method="post" class="form-horizontal">
                     @csrf
-                    @method('post')
+                    @method('put')
                     <input type="hidden" name="id" value="{{$task->id}}">
                     <!-- Task Name -->
                     <div class="form-group">
@@ -56,22 +67,17 @@
 
                                 <!-- Task Delete Button -->
                                 <td>
-                                    <form action="{{url('delete/'.$task->id)}}" method="post">
+                                    <form action="{{route("task.destroy",$task->id)}}" method="post">
                                       @csrf
-
+                                      @method('delete')
                                         <button type="submit" class="btn btn-danger">
                                             <i class="fa fa-btn fa-trash"></i>Delete
                                         </button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="{{url('edit/'.$task->id)}}" method="post">
-                                      @csrf
+                                  <a class="btn btn-danger" href="{{route("task.edit",$task->id)}}">  <i class="fa-solid fa-pen-to-square fas fa-edit"></i> Edit</a>
 
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-btn fa-trash"></i>Edit
-                                        </button>
-                                    </form>
                                 </td>
                             </tr>
 
